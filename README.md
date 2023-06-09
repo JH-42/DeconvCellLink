@@ -23,7 +23,7 @@ if (!require(org.Mm.eg.db)) BiocManager::install("org.Mm.eg.db")
 ```
 estimate.proportion <- DCL_net(exp_dat,geneList,tissueType = "Inflammatory")
 estimate.proportion$bnObject
-pheatmap::pheatmap(lps_up_lv_inf$cells_proportion,scale = "row")
+pheatmap::pheatmap(estimate.proportion$cells_proportion,scale = "row")
 ```
 ## Arguments
 * `exp_dat`        A data frame containing the expression data (CPM/TPM).
