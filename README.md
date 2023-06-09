@@ -10,9 +10,9 @@ BiocManager::install("JH-42/DeconvCellLink")
 
 ```
 if (!require(bcv)) install.packages("bcv")
-if (!require(SSMD)) BiocManager::install("millersan/SSMD_for_bulk_cell_talk")
+if (!require(SSMD)) BiocManager::install("xiaoyulu95/SSMD")
 if (!require(clusterProfiler)) BiocManager::install("clusterProfiler")
-if (!require(CBNplot)) BiocManager::install("millersan/CBNplot_for_bulk_cell_talk")
+if (!require(CBNplot)) BiocManager::install("noriakis/CBNplot")
 if (!require(pheatmap)) install.packages("pheatmap")
 if (!require(reshape2)) install.packages("reshape2")
 if (!require(org.Mm.eg.db)) BiocManager::install("org.Mm.eg.db")
