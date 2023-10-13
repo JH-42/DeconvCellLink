@@ -21,6 +21,7 @@ if (!require(org.Mm.eg.db)) BiocManager::install("org.Mm.eg.db")
 ## Usage
 
 ```
+#The exp_dat and geneList should use Gene Symbols.
 estimate.proportion <- DCL_net(exp_dat,geneList,tissueType = "Inflammatory")
 estimate.proportion$bnObject
 pheatmap::pheatmap(estimate.proportion$cells_proportion,scale = "row")
