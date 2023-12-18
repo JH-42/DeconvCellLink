@@ -36,18 +36,21 @@
 #'
 #' @references
 #' - Jun-Hao Wang#, Zhao-Qian Zhong#, Hai-Hua Luo#, Qi-Zheng Han, Kan Wu, Li Chen, Yanxia Gao, Yong Jiang*. Comparative Analysis of Brain Inflammation Reveals New Insights into Sepsis Associated Encephalopathy Progression
-
+#'
+#'
+#'
 
 .onLoad <- function(libname, pkgname) {
-utils::data(Mouse_CNS_core_marker, package = pkgname, envir = parent.env(environment()))
-Mouse_Brain_core_marker <- DeconvCellLink::Mouse_CNS_core_marker
-assign("Mouse_Brain_core_marker", Mouse_Brain_core_marker, envir = parent.env(environment()))
+   utils::data(Mouse_CNS_core_marker, package = pkgname, envir = parent.env(environment()))
+   Mouse_Brain_core_marker <- DeconvCellLink::Mouse_CNS_core_marker
+   assign("Mouse_Brain_core_marker", Mouse_Brain_core_marker, envir = parent.env(environment()))
 
 
-utils::data(Mouse_inflammation_core_marker, package = pkgname, envir = parent.env(environment()))
-Mouse_Cancer_core_marker <- DeconvCellLink::Mouse_inflammation_core_marker
-assign("Mouse_Cancer_core_marker", Mouse_Cancer_core_marker, envir = parent.env(environment()))
+   utils::data(Mouse_inflammation_core_marker, package = pkgname, envir = parent.env(environment()))
+   Mouse_Cancer_core_marker <- DeconvCellLink::Mouse_inflammation_core_marker
+   assign("Mouse_Cancer_core_marker", Mouse_Cancer_core_marker, envir = parent.env(environment()))
 }
+
 
 
 DCL_net <- function(expression_data, geneList = NULL, tissueType, hub = 3) {
