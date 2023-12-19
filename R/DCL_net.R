@@ -69,7 +69,7 @@ DCL_net <- function(expression_data, geneList = NULL, tissueType, hub = 3) {
 
 
   df <- as.matrix(do.call(cbind, ep$marker_gene))
-
+  
   {
     gs <- melt(df, varnames = c("cellName", "geneID"), value.name = "expression")
     gs <- gs[, c("geneID", "expression")]
@@ -80,7 +80,7 @@ DCL_net <- function(expression_data, geneList = NULL, tissueType, hub = 3) {
     row.names(gs) <- gs$SYMBOL
     row.names(eg_gs) <- eg_gs$SYMBOL
     colnames(eg_gs) <- c("geneID", "ENTREZID")
-
+    
     ggs <- merge(gs, eg_gs, by = "geneID")
     ggs$geneID <- NULL
     colnames(ggs) <- c("cellName", "geneID")
@@ -94,16 +94,16 @@ DCL_net <- function(expression_data, geneList = NULL, tissueType, hub = 3) {
     geneList <- bitr(geneList, fromType = "SYMBOL", toType = "ENTREZID", OrgDb = "org.Mm.eg.db")
     y <- clusterProfiler::enricher(gene = geneList$ENTREZID, TERM2GENE = ggs, minGSSize = 1, pvalueCutoff = 0.05, qvalueCutoff = 0.05, pAdjustMethod = "BH")
   }
-
+  
   y@keytype <- "ENTREZID"
   y@organism <- "Mus musculus"
-
+  
   n1 <- bitr(row.names(expression_data), fromType = "SYMBOL", toType = "ENTREZID", OrgDb = "org.Mm.eg.db")
   n2 <- expression_data[n1$SYMBOL, ]
   rownames(n2) <- n1$ENTREZID
-
-  am <- bnpathplot(results = y, exp = n2, expRow = "ENTREZID", orgDb = org.Mm.eg.db, qvalueCutOff = 0.05, adjpCutOff = 0.05, R = 100, seed = 123, hub = hub) # ,interactive=T, strengthPlot = T
-
+  
+  am <- bnpathplot(results = y, exp = n2, expRow = "ENTREZID", orgDb = org.Mm.eg.db, qvalueCutOff = 0.05, adjpCutOff = 0.05, R = 100, seed = 123,hub=hub) # ,interactive=T, strengthPlot = T
+  
 
   # y <- clusterProfiler::enricher(eg_gene$ENTREZID, TERM2GENE=ggs, minGSSize=1,pvalueCutoff = 0.05,qvalueCutoff = 0.05,pAdjustMethod = "none")
 
