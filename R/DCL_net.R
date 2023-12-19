@@ -40,6 +40,15 @@
 #'
 #'
 
+.onLoad <- function(libname, pkgname) {
+names(Mouse_Brain_core_marker)<-c("ependymal","micro_glial","oligodendrocyte",
+                                  "stromal_like_cell","endothelial","Schwann",
+                                  "glial_cell","neuron","astrocyte")
+
+colnames(Mouse_Brain_labeling_matrix)<-c("astrocyte","endothelial","Ependymal",
+                                         "stromal_like_cell","oligodendrocyte",
+                                         "Microglial","glial_cell","neuron","Schwann")
+}
 
 DCL_net <- function(expression_data, geneList = NULL, tissueType, hub = 3) {
   if (tissueType == "Inflammatory") {
