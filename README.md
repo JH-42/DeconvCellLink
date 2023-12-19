@@ -10,7 +10,7 @@ BiocManager::install("JH-42/DeconvCellLink")
 
 ```
 if (!require(bcv)) install.packages("bcv")
-if (!require(SSMD)) BiocManager::install("xiaoyulu95/SSMD")
+if (!require(SSMD)) BiocManager::install("JH-42/SSMD")
 if (!require(clusterProfiler)) BiocManager::install("clusterProfiler")
 if (!require(CBNplot)) BiocManager::install("noriakis/CBNplot")
 if (!require(pheatmap)) install.packages("pheatmap")
