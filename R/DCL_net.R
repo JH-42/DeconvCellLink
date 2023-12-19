@@ -45,7 +45,7 @@ names(Mouse_Brain_core_marker)<-c("ependymal","micro_glial","oligodendrocyte",
                                   "stromal_like_cell","endothelial","Schwann",
                                   "glial_cell","neuron","astrocyte")
 
-colnames(Mouse_Brain_labeling_matrix)<-c("astrocyte","endothelial","Ependymal",
+colnames(Mouse_Brain_labeling_matrix)<-c("astrocyte","endothelial","ependymal",
                                          "stromal_like_cell","oligodendrocyte",
                                          "Microglial","glial_cell","neuron","Schwann")
 }
