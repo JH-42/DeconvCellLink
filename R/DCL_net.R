@@ -40,6 +40,7 @@
 #'
 #'
 
+
 .onLoad <- function(libname, pkgname) {
 names(Mouse_Brain_core_marker)<-c("ependymal","micro_glial","oligodendrocyte",
                                   "stromal_like_cell","endothelial","Schwann",
@@ -47,12 +48,14 @@ names(Mouse_Brain_core_marker)<-c("ependymal","micro_glial","oligodendrocyte",
 
 colnames(Mouse_Brain_labeling_matrix)<-c("astrocyte","endothelial","ependymal",
                                          "stromal_like_cell","oligodendrocyte",
-                                         "Microglial","glial_cell","neuron","Schwann")
+                                         "micro_glial","glial_cell","neuron","Schwann")
 }
 
-DCL_net <- function(expression_data, geneList = NULL, tissueType, hub = 3) {
+
+
+DCL_net <-function(expression_data, geneList = NULL, tissueType,hub=3) {
   if (tissueType == "Inflammatory") {
-    ep <- SSMD(bulk_data = expression_data, tissue = "Inflammatory")
+    ep <- SSMD(bulk_data = all_exp, tissue = "Inflammatory")
   }
   if (tissueType == "Central Nervous System") {
     ep <- SSMD(bulk_data = expression_data, tissue = "Central Nervous System")
@@ -63,8 +66,8 @@ DCL_net <- function(expression_data, geneList = NULL, tissueType, hub = 3) {
   if (tissueType == "Blood") {
     ep <- SSMD(bulk_data = expression_data, tissue = "Blood")
   }
-
-
+  
+  
   df <- as.matrix(do.call(cbind, ep$marker_gene))
   
   {
@@ -101,8 +104,8 @@ DCL_net <- function(expression_data, geneList = NULL, tissueType, hub = 3) {
   
   am <- bnpathplot(results = y, exp = n2, expRow = "ENTREZID", orgDb = org.Mm.eg.db, qvalueCutOff = 0.05, adjpCutOff = 0.05, R = 100, seed = 123,hub=hub) # ,interactive=T, strengthPlot = T
   
-
+  
   # y <- clusterProfiler::enricher(eg_gene$ENTREZID, TERM2GENE=ggs, minGSSize=1,pvalueCutoff = 0.05,qvalueCutoff = 0.05,pAdjustMethod = "none")
-
+  
   return(list(enricher = y, marker = gs, bnObject = am, cells_proportion = ep$Proportion))
 }
