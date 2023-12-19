@@ -40,18 +40,6 @@
 #'
 #'
 
-.onLoad <- function(libname, pkgname) {
-   utils::data(Mouse_CNS_core_marker, package = pkgname, envir = parent.env(environment()))
-   Mouse_Brain_core_marker <- DeconvCellLink::Mouse_CNS_core_marker
-   assign("Mouse_Brain_core_marker", Mouse_Brain_core_marker, envir = parent.env(environment()))
-
-
-   utils::data(Mouse_inflammation_core_marker, package = pkgname, envir = parent.env(environment()))
-   Mouse_Cancer_core_marker <- DeconvCellLink::Mouse_inflammation_core_marker
-   assign("Mouse_Cancer_core_marker", Mouse_Cancer_core_marker, envir = parent.env(environment()))
-}
-
-
 
 DCL_net <- function(expression_data, geneList = NULL, tissueType, hub = 3) {
   if (tissueType == "Inflammatory") {
