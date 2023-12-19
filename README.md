@@ -9,12 +9,20 @@ BiocManager::install("JH-42/DeconvCellLink")
 ## Dependency
 
 ```
+if (!require(BiocManager)) install.packages("BiocManager")
+if (!require(remotes)) install.packages("remotes")
 if (!require(bcv)) install.packages("bcv")
 if (!require(SSMD)) BiocManager::install("JH-42/SSMD")
 if (!require(clusterProfiler)) BiocManager::install("clusterProfiler")
 if (!require(CBNplot)) BiocManager::install("noriakis/CBNplot")
 if (!require(pheatmap)) install.packages("pheatmap")
 if (!require(reshape2)) install.packages("reshape2")
+if (!require(bnlearn)) install.packages("bnlearn")
+if (!require(igraph)) install.packages("igraph")
+if (!require(ggraph)) install.packages("ggraph")
+if (!require(bnviewer)) install.packages("bnviewer")
+if (!require(dplyr)) install.packages("dplyr")
+if (!require(nnls)) install.packages("nnls")
 if (!require(org.Mm.eg.db)) BiocManager::install("org.Mm.eg.db")
 ```
 
@@ -27,7 +35,7 @@ estimate.proportion$bnObject
 pheatmap::pheatmap(estimate.proportion$cells_proportion,scale = "row")
 ```
 ## Arguments
-* `exp_dat`        A data frame containing the expression data (CPM/TPM).
+* `exp_dat`        A data matrix containing the expression data (CPM/TPM).
 * `geneList`        A gene list, such as a list of differentially expressed genes (DEgenes).
 * `tissueType`        The tissue type of the expression data. Choose one of the following: 'Inflammatory', 'Central Nervous System', 'Hematopoietic System', 'Blood'.
 
