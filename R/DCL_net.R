@@ -107,5 +107,5 @@ DCL_net <-function(expression_data, geneList = NULL, tissueType,hub=1) {
   
   # y <- clusterProfiler::enricher(eg_gene$ENTREZID, TERM2GENE=ggs, minGSSize=1,pvalueCutoff = 0.05,qvalueCutoff = 0.05,pAdjustMethod = "none")
   
-  return(list(enricher = y, marker = gs, bnObject = am, cells_proportion = ep$Proportion))
+  return(list(enricher = y, marker = gs, bnObject = am, cells_proportion = ep$Proportion, gene_scores = ep$Escore))
 }
