@@ -55,7 +55,7 @@ colnames(Mouse_Brain_labeling_matrix)<-c("astrocyte","endothelial","ependymal",
 
 DCL_net <-function(expression_data, geneList = NULL, tissueType,hub=1) {
   if (tissueType == "Inflammatory") {
-    ep <- SSMD(bulk_data = all_exp, tissue = "Inflammatory")
+    ep <- SSMD(bulk_data = expression_data, tissue = "Inflammatory")
   }
   if (tissueType == "Central Nervous System") {
     ep <- SSMD(bulk_data = expression_data, tissue = "Central Nervous System")
