@@ -44,8 +44,8 @@
 DCL_net <- function(expression_data, geneList = NULL, tissueType = NULL, mult = FALSE, mult_tissue = NULL) {
   combined_proportion <- list()
   combined_marker_gene <- list()
-  # combined_Escore <- list()
-  # combined_potential_modules <- list()
+  combined_Escore <- list()
+  combined_potential_modules <- list()
   
   if (!mult) {
     # single tissue
