@@ -108,7 +108,7 @@ DCL_net <- function(expression_data, geneList = NULL, tissueType = NULL, mult = 
   combined_Escore_df <- do.call(rbind, combined_Escore)
   ep <- list()
   for (sublist in combined_marker_gene) {
-    ep <- c(final_list, as.list(sublist))
+    ep <- append(ep, sublist)
   }
   
   df <- as.matrix(do.call(cbind, ep))
