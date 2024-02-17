@@ -41,6 +41,7 @@
 #'
 
 
+
 DCL_net <- function(expression_data, geneList = NULL, tissueType = NULL, mult = FALSE, mult_tissue = NULL) {
   combined_proportion <- list()
   combined_marker_gene <- list()
@@ -153,4 +154,3 @@ DCL_net <- function(expression_data, geneList = NULL, tissueType = NULL, mult = 
   return(list(enricher = y, marker = gs, bnObject = am, cells_proportion = combined_prop_df, gene_scores = combined_Escore_df))
   }
 }
-  
