@@ -99,7 +99,6 @@ DCL_net <- function(expression_data, geneList = NULL, tissueType = NULL, mult = 
     }
     for (tissue in mult_tissue) {
       ssmd_result <- SSMD(bulk_data = expression_data, tissue = tissue)
-      # 将每个组织的结果追加到对应的列表中
       combined_proportion[[tissue]] <- ssmd_result$Proportion
       combined_marker_gene[[tissue]] <- ssmd_result$marker_gene
       combined_Escore[[tissue]] <- ssmd_result$Escore
