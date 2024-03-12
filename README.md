@@ -1,5 +1,11 @@
 # DeconvCellLink: Approach for Infer potential deconvolution cell types interactions from mouse bulk RNA-seq data
 
+## Update
+```
+Increase parallelization
+Add GSEA algorithm
+
+```
 ## Installation
 ```
 install.packages("remotes")
