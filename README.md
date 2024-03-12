@@ -30,8 +30,12 @@ if (!require(igraph)) install.packages("igraph")
 if (!require(ggraph)) install.packages("ggraph")
 if (!require(bnviewer)) install.packages("bnviewer")
 if (!require(dplyr)) install.packages("dplyr")
+if (!require(tidyr)) install.packages("tidyr")
 if (!require(nnls)) install.packages("nnls")
 if (!require(org.Mm.eg.db)) BiocManager::install("org.Mm.eg.db")
+if (!require(parallel)) BiocManager::install("parallel")
+if (!require(foreach)) BiocManager::install("foreach")
+
 ```
 
 ## Usage
