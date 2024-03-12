@@ -42,7 +42,9 @@ if (!require(foreach)) BiocManager::install("foreach")
 
 ```
 #The exp_dat and geneList should use Gene Symbols.
-estimate.proportion <- DCL_net(exp_dat,geneList,tissueType = "Inflammatory")
+estimate.proportion <- DCL_net(exp_dat,geneList,tissueType = "Inflammatory") #single tissue cell types
+estimate.proportion <- DCL_GSEA_net(expression_data = exp,geneList = geneList,tissueType = NULL,mult = T,
+             mult_tissue = c("Inflammatory","Central Nervous System"),numCores = 12)#multiple tissue cell types
 estimate.proportion$bnObject
 pheatmap::pheatmap(estimate.proportion$cells_proportion,scale = "row")
 ```
@@ -50,6 +52,9 @@ pheatmap::pheatmap(estimate.proportion$cells_proportion,scale = "row")
 * `exp_dat`        A data matrix containing the expression data (CPM/TPM).
 * `geneList`        A gene list, such as a list of differentially expressed genes (DEgenes).
 * `tissueType`        The tissue type of the expression data. Choose one of the following: 'Inflammatory', 'Central Nervous System', 'Hematopoietic System', 'Blood'.
+*  `mult` Whether to use multi-tissue annotations.
+*  `mult_tissue` Which tissue annotations to use.
+*  `numCores` How many cores to use.
 
 ## Value
 
