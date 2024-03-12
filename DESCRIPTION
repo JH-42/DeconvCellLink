@@ -23,7 +23,7 @@ Imports:
     remotes,
     reshape2,
     foreach,
-    doParallel
+    parallel
 Depends: 
     CBNplot,
     SSMD
