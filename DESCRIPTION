@@ -21,7 +21,9 @@ Imports:
     igraph,
     org.Mm.eg.db,
     remotes,
-    reshape2
+    reshape2,
+    foreach,
+    doParallel
 Depends: 
     CBNplot,
     SSMD
