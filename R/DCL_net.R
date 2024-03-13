@@ -85,7 +85,7 @@ DCL_net <- function(expression_data, geneList = NULL, tissueType = NULL, mult = 
     n2 <- expression_data[n1$SYMBOL, ]
     rownames(n2) <- n1$ENTREZID
     
-    am <- bnpathplot(results = y, exp = n2, expRow = "ENTREZID", orgDb = org.Mm.eg.db, qvalueCutOff = 0.05, adjpCutOff = 0.05, R = 100, seed = 123,hub=1) # ,interactive=T, strengthPlot = T
+    am <- bnpathplot(results = y, R=500, exp = n2, expRow = "ENTREZID", orgDb = org.Mm.eg.db, qvalueCutOff = 0.05, adjpCutOff = 0.05, R = 100, seed = 123,hub=1) # ,interactive=T, strengthPlot = T
     
     
     # y <- clusterProfiler::enricher(eg_gene$ENTREZID, TERM2GENE=ggs, minGSSize=1,pvalueCutoff = 0.05,qvalueCutoff = 0.05,pAdjustMethod = "none")
@@ -145,7 +145,7 @@ DCL_net <- function(expression_data, geneList = NULL, tissueType = NULL, mult = 
   n2 <- expression_data[n1$SYMBOL, ]
   rownames(n2) <- n1$ENTREZID
   
-  am <- bnpathplot(results = y, exp = n2, expRow = "ENTREZID", orgDb = org.Mm.eg.db, qvalueCutOff = 0.05, adjpCutOff = 0.05, R = 100, seed = 123,hub=NULL, returnNet=TRUE) # ,interactive=T, strengthPlot = T
+  am <- bnpathplot(results = y, exp = n2, expRow = "ENTREZID", orgDb = org.Mm.eg.db, qvalueCutOff = 0.05, adjpCutOff = 0.05, R = 500, seed = 123,hub=NULL, returnNet=TRUE) # ,interactive=T, strengthPlot = T
   
   
   # y <- clusterProfiler::enricher(eg_gene$ENTREZID, TERM2GENE=ggs, minGSSize=1,pvalueCutoff = 0.05,qvalueCutoff = 0.05,pAdjustMethod = "none")
