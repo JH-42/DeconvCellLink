@@ -74,7 +74,7 @@ DCL_GSEA_net <- function(expression_data, geneList = NULL, tissueType = NULL, mu
                      expRow = "SYMBOL", bypassConverting = T,
                      color = "enrichmentScore", returnNet = TRUE)
     
-    return(list(enricher = y, marker = gs, bnObject = am, cells_proportion = combined_prop_df, gene_scores = combined_Escore_df))
+    return(list(enricher = y, marker = gs, bnObject = am, cells_proportion = combined_prop_df, gene_scores = combined_Escore_df，tissue=tissueType))
   } else {
     # multi tissue
     if (is.null(mult_tissue)) {
@@ -148,6 +148,9 @@ DCL_GSEA_net <- function(expression_data, geneList = NULL, tissueType = NULL, mu
                      expRow = "SYMBOL", bypassConverting = T,
                      color = "enrichmentScore", returnNet = TRUE)
     
-    return(list(enricher = y, marker = gs, bnObject = am, cells_proportion = combined_prop_df, gene_scores = combined_Escore_df))
+    return(list(enricher = y, marker = gs, bnObject = am, 
+                cells_proportion = combined_prop_df,
+                gene_scores = combined_Escore_df,
+                tissue=mult_tissue))
   }
 }
