@@ -22,6 +22,7 @@ Imports:
     org.Mm.eg.db,
     remotes,
     reshape2,
+    stringr,
     foreach,
     doParallel,
     parallel
