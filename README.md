@@ -2,11 +2,17 @@
 
 ## Update
 
+**Version 1.2 (2024-03-17)**
+
+_Added new functions of receptor-ligand interactions_
+
+
 **Version 1.1 (2024-03-15)**
 
 _Added new functions based on GSEA algorithm_
 
 _Added multi-threading to optimize running speed_
+
 
 ## Installation
 ```
@@ -31,10 +37,10 @@ if (!require(ggraph)) install.packages("ggraph")
 if (!require(bnviewer)) install.packages("bnviewer")
 if (!require(dplyr)) install.packages("dplyr")
 if (!require(tidyr)) install.packages("tidyr")
+if (!require(stringr)) install.packages("stringr")
 if (!require(nnls)) install.packages("nnls")
 if (!require(org.Mm.eg.db)) BiocManager::install("org.Mm.eg.db")
 if (!require(parallel)) BiocManager::install("parallel")
-if (!require(doParallel)) BiocManager::install("doParallel")
 if (!require(foreach)) BiocManager::install("foreach")
 
 ```
@@ -43,11 +49,21 @@ if (!require(foreach)) BiocManager::install("foreach")
 
 ```
 #The exp_dat and geneList should use Gene Symbols.
-estimate.proportion <- DCL_net(exp_dat,geneList,tissueType = "Inflammatory") #single tissue cell types
-estimate.proportion <- DCL_GSEA_net(expression_data = exp,geneList = geneList,tissueType = NULL,mult = T,
-             mult_tissue = c("Inflammatory","Central Nervous System"),numCores = 12)#multiple tissue cell types
-estimate.proportion$bnObject
-pheatmap::pheatmap(estimate.proportion$cells_proportion,scale = "row")
+
+#single tissue cell types
+DCL_obj <- DCL_net(exp_dat,geneList,tissueType = "Inflammatory")
+
+#multiple tissue cell types
+DCL_obj <- DCL_GSEA_net(expression_data = exp,geneList = geneList,tissueType = NULL,mult = T,
+             mult_tissue = c("Inflammatory","Central Nervous System"),numCores = 12)
+DCL_obj$bnObject
+
+pheatmap::pheatmap(DCL_obj$cells_proportion,scale = "row")
+
+
+#LR_plot
+LR_plot<-DCL_GSEA_net_interaction(DCL_obj,deg = deg))#deg = deg list
+LR_plot$LR_plot
 ```
 ## Arguments
 * `exp_dat`        A data matrix containing the expression data (CPM/TPM).
