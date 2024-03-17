@@ -57,6 +57,7 @@ DCL_obj <- DCL_net(exp_dat,geneList,tissueType = "Inflammatory")
 DCL_obj <- DCL_GSEA_net(expression_data = exp,geneList = geneList,tissueType = NULL,mult = T,
              mult_tissue = c("Inflammatory","Central Nervous System"),numCores = 12)
 DCL_obj$bnObject
+![Image text](https://github.com/JH-42/DeconvCellLink/blob/main/img/DCL_plot.png)
 
 pheatmap::pheatmap(DCL_obj$cells_proportion,scale = "row")
 
@@ -64,6 +65,7 @@ pheatmap::pheatmap(DCL_obj$cells_proportion,scale = "row")
 #LR_plot
 LR_plot<-DCL_GSEA_net_interaction(DCL_obj,deg = deg))#deg = deg list
 LR_plot$LR_plot
+![Image text](https://github.com/JH-42/DeconvCellLink/blob/main/img/LR-plot.png)
 ```
 ## Arguments
 * `exp_dat`        A data matrix containing the expression data (CPM/TPM).
