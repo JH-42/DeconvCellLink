@@ -11,7 +11,7 @@
 #'   \item{LR_plot}{L-R plot.}
 #'
 
-DCL_LR_plot <- function(DCL_Object=DCL_Object, deg=NULL, expression_data=NULL, cor_method="pearson", cor_threshold=0.3) {
+DCL_LR_plot <- function(DCL_Object=DCL_Object, deg=NULL, expression_data=NULL, cor_method="pearson", cor_threshold=0) {
   
   gene_scores <- data.frame(DCL_Object$gene_scores)
   gene_scores$geneID<-row.names(gene_scores)
