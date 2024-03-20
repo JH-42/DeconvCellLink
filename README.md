@@ -65,7 +65,7 @@ pheatmap::pheatmap(DCL_obj$cells_proportion,scale = "row")
 
 
 #LR_plot
-LR_plot<-DCL_GSEA_net_interaction(DCL_obj,deg = deg))#deg = deg list
+LR_plot<-DCL_GSEA_net_interaction(DCL_obj,deg = deg, expression_data = exp,cor_method = "pearson",cor_threshold = 0)#deg = deg list
 LR_plot$LR_plot
 ```
 ![LR Plot](https://raw.githubusercontent.com/JH-42/DeconvCellLink/main/img/LR-plot.png)
