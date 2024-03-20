@@ -2,6 +2,7 @@
 
 export(DCL_GSEA_net)
 export(DCL_net)
+export(DCL_LR_plot)
 export(combine_diff_cell_marker_net)
 export(compareEnrichment)
 import(BiocManager)
