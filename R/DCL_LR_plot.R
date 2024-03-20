@@ -115,17 +115,25 @@ DCL_LR_plot <- function(DCL_Object=DCL_Object, deg=NULL, expression_data=NULL, c
            LR_interaction = factor(LR_interaction, levels = lr_interactions))
   
   LR_plot <- ggplot(df, aes(x = cell_interaction, y = LR_interaction, color = strength, size = cor)) +
-    geom_point() +
-    scale_color_gradient(low = "blue", high = "red") +
-    scale_size(range = c(1, 6)) +  # Adjust the range as needed for your data
-    labs(x = "Ligand-Receptor Interaction", y = "Cell-Cell Interaction", color = "Strength", size = "Correlation") +
-    theme_classic() +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1),
-          legend.position = "right",
-          # Add grid lines
-          panel.grid.major = element_line(color = "grey", size = 0.5), 
-          panel.grid.minor = element_line(color = "grey", size = 0.25),
-          axis.line = element_line(color = "black"))
-  
+  geom_point() +
+  scale_color_gradient(low = "blue", high = "red") +
+  scale_size(range = c(1, 5)) +
+  labs(x = "Ligand-Receptor Interaction", y = "Cell-Cell Interaction", color = "Strength", size = "Correlation") +
+  theme(
+    # Remove axis lines and ticks
+    axis.line = element_blank(),
+    axis.ticks = element_blank(),
+    # Remove axis text
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    # Remove plot background
+    panel.background = element_blank(),
+    # Add grid lines
+    panel.grid.major = element_line(color = "grey", size = 0.5), 
+    panel.grid.minor = element_line(color = "grey", size = 0.25),
+    # Add a frame around the grid
+    panel.border = element_rect(color = "black", fill = NA, size = 1),
+    # Adjust legend position
+    legend.position = "right"
+  )
   return(list(results = results, LR_plot = LR_plot))
 }
