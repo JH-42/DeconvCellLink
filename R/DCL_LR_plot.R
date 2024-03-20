@@ -9,7 +9,7 @@
 #'   \item{LR_plot}{L-R plot.}
 #'
 
-LR_interaction <- function(DCL_Object=DCL_Object, deg=NULL) {
+DCL_LR_plot <- function(DCL_Object=DCL_Object, deg=NULL) {
   
   gene_scores <- data.frame(DCL_Object$gene_scores)
   gene_scores$geneID<-row.names(gene_scores)
