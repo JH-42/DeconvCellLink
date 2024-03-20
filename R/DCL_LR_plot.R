@@ -2,20 +2,21 @@
 #'
 #' @param DCL_Object Deconvolution Cell Link object from DCL_GSEA or DCL_net.
 #' @param deg A character of differentially expressed genes (DEgenes), Default is NULL.
-#' 
+#' @param expression_data data frame of expression data
+#' @param cor_method correlation method of ligand and receptor, one of "pearson", "kendall" and "spearman"
+#' @param cor_threshold the threshold of correlation 
 #' 
 #' @return A list containing the following objects:
 #'   \item{results}{L-R results.}
 #'   \item{LR_plot}{L-R plot.}
 #'
 
-DCL_LR_plot <- function(DCL_Object=DCL_Object, deg=NULL) {
+DCL_LR_plot <- function(DCL_Object=DCL_Object, deg=NULL, expression_data=NULL, cor_method="pearson", cor_threshold=0.3) {
   
   gene_scores <- data.frame(DCL_Object$gene_scores)
   gene_scores$geneID<-row.names(gene_scores)
   names(gene_scores)<-c("gene_score","geneID")
   
-
   cell_interactions <- DCL_Object$bnObject$str %>% filter(strength > 0.6)#screening strength >0.6
   cell_genes <- inner_join(DCL_Object$marker, gene_scores, by = "geneID")[,1:2]
   gene_interactions <- LRI_mouse$LRI_curated
@@ -89,10 +90,21 @@ DCL_LR_plot <- function(DCL_Object=DCL_Object, deg=NULL) {
     results <- results_in_deg
   }
   
+  # Correlation analysis using expression data
+  if (!is.null(expression_data)) {
+    results_with_cor <- results %>%
+      rowwise() %>%
+      mutate(cor = cor(expression_data[ligand, ], expression_data[receptor, ], method = cor_method)) %>%
+      filter(cor >= cor_threshold) %>%
+      ungroup()
+    
+    results <- results_with_cor
+  }
+  
   plot_data <- results %>%
     mutate(cell_interaction = paste(from, to, sep = " - "),
            LR_interaction = paste(ligand, receptor, sep = " - ")) %>%
-    dplyr::select(cell_interaction, LR_interaction, strength) %>%
+    dplyr::select(cell_interaction, LR_interaction, strength,cor) %>%
     distinct()
   
   cell_interactions <- unique(plot_data$cell_interaction)
@@ -102,15 +114,18 @@ DCL_LR_plot <- function(DCL_Object=DCL_Object, deg=NULL) {
     mutate(cell_interaction = factor(cell_interaction, levels = cell_interactions),
            LR_interaction = factor(LR_interaction, levels = lr_interactions))
   
-  LR_plot <- ggplot(df, aes(x = cell_interaction, y = LR_interaction, color = strength)) +
-    geom_point(size = 3) +
+  LR_plot <- ggplot(df, aes(x = cell_interaction, y = LR_interaction, color = strength, size = cor)) +
+    geom_point() +
     scale_color_gradient(low = "blue", high = "red") +
-    labs(x = "Ligand-Receptor Interaction", y = "Cell-Cell Interaction", color = "Strength") +
+    scale_size(range = c(1, 6)) +  # Adjust the range as needed for your data
+    labs(x = "Ligand-Receptor Interaction", y = "Cell-Cell Interaction", color = "Strength", size = "Correlation") +
     theme_classic() +
     theme(axis.text.x = element_text(angle = 45, hjust = 1),
           legend.position = "right",
-          panel.grid.major = element_blank(),
-          panel.grid.minor = element_blank())
+          # Add grid lines
+          panel.grid.major = element_line(color = "grey", size = 0.5), 
+          panel.grid.minor = element_line(color = "grey", size = 0.25),
+          axis.line = element_line(color = "black"))
   
   return(list(results = results, LR_plot = LR_plot))
 }
