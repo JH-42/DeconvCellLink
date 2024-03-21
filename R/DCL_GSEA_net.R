@@ -69,12 +69,13 @@ DCL_GSEA_net <- function(expression_data, geneList = NULL, tissueType = NULL, mu
     }
     
     am <- bnpathplot(results = y,
-                     exp = dd, qvalueCutOff = 0.05,
+                     exp = dd, qvalueCutOff = 0.05,cexLine = 0,
                      R = 100, orgDb = org.Mm.eg.db, nCategory = 50,
                      expRow = "SYMBOL", bypassConverting = T,
                      color = "enrichmentScore", returnNet = TRUE)
-    
-    return(list(enricher = y, marker = gs, bnObject = am, cells_proportion = combined_prop_df, gene_scores = combined_Escore_df,tissue=tissueType))
+     dcl_plot<-am$plot+scale_color_gradient2(name = "enrichmentScore",low = "#6DC2C5", mid = "white", high = "#aa0051", midpoint = 0)
+
+    return(list(enricher = y, marker = gs,  dcl_plot = dcl_plot, bnObject = am, cells_proportion = combined_prop_df, gene_scores = combined_Escore_df,tissue=tissueType))
   } else {
     # multi tissue
     if (is.null(mult_tissue)) {
