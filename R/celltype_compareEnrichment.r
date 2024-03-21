@@ -18,8 +18,8 @@
 # options(clusterProfiler.download.method = "wget")#windows
 
 
-compareEnrichment <- function(celltypeObject, celltypes, enrichType, showCategory = 5, pvalueCutoff = 1, pAdjustMethod = "BH", minGSSize = 1, qvalueCutoff = 1) {
-  df <- celltypeObject$marker
+compareEnrichment <- function(DCL_Object=DCL_Object, celltypes, enrichType, showCategory = 5, pvalueCutoff = 1, pAdjustMethod = "BH", minGSSize = 1, qvalueCutoff = 1) {
+  df <- DCL_Object$marker
   # Pivot data frame
   df_pivoted <- df %>%
     group_by(cellName) %>%
