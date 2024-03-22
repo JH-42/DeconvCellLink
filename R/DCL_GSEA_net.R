@@ -122,6 +122,15 @@ DCL_GSEA_net <- function(expression_data, geneList = NULL, tissueType = NULL, mu
       gs <- gs[, c("geneID", "expression")]
       colnames(gs) <- c("cellName", "geneID")
       row.names(gs) <- gs$SYMBOL
+      symbol <- as.character(gs[, 2])
+      eg_gs <- bitr(symbol, fromType = "SYMBOL", toType = "ENTREZID", OrgDb = "org.Mm.eg.db")
+      row.names(gs) <- gs$SYMBOL
+      row.names(eg_gs) <- eg_gs$SYMBOL
+      colnames(eg_gs) <- c("geneID", "ENTREZID")
+      ggs <- merge(gs, eg_gs, by = "geneID")
+      ggs$geneID <- NULL
+      colnames(ggs) <- c("cellName", "geneID")
+      ggs <- ggs %>% distinct(cellName, geneID)
     }
     
     if (is.null(geneList)) {
