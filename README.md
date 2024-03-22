@@ -41,6 +41,7 @@ if (!require(stringr)) install.packages("stringr")
 if (!require(nnls)) install.packages("nnls")
 if (!require(org.Mm.eg.db)) BiocManager::install("org.Mm.eg.db")
 if (!require(parallel)) BiocManager::install("parallel")
+if (!require(doParallel)) BiocManager::install("doParallel")
 if (!require(foreach)) BiocManager::install("foreach")
 
 ```
