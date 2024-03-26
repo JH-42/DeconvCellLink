@@ -68,7 +68,7 @@ DCL_GSEA_net <- function(expression_data, geneList = NULL, tissueType = NULL, mu
     }
     
     am <- bnpathplot(results = y,
-                     exp = dd, qvalueCutOff = 0.05,cexLine = 0,
+                     exp = expression_data, qvalueCutOff = 0.05,cexLine = 0,
                      R = 100, orgDb = org.Mm.eg.db, nCategory = 50,
                      expRow = "SYMBOL", bypassConverting = T,
                      color = "enrichmentScore", returnNet = TRUE)
@@ -142,7 +142,7 @@ DCL_GSEA_net <- function(expression_data, geneList = NULL, tissueType = NULL, mu
     }
     
     am <- bnpathplot(results = y,
-                     exp = dd, qvalueCutOff = 0.05,cexLine = 0,
+                     exp = expression_data, qvalueCutOff = 0.05,cexLine = 0,
                      R = 100, orgDb = org.Mm.eg.db, nCategory = 50,
                      expRow = "SYMBOL", bypassConverting = T,
                      color = "enrichmentScore", returnNet = TRUE)
