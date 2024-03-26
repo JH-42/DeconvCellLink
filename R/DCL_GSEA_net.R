@@ -62,8 +62,7 @@ DCL_GSEA_net <- function(expression_data, geneList = NULL, tissueType = NULL, mu
       return(list(marker = gs, cells_proportion = ep$Proportion))
     } else {
       data_all_sort <- geneList %>% arrange(desc(geneList[1]))
-      geneList = data_all_sort$logFC
-      names(geneList) <- row.names(data_all_sort)
+      geneList = data_all_sort[1]
       symbol_2 <- as.character(rownames(geneList))
       y <- clusterProfiler::GSEA(gene = geneList, TERM2GENE = gs, minGSSize = 3, pvalueCutoff = 0.05, pAdjustMethod = "BH", seed = 123)
     }
@@ -137,8 +136,7 @@ DCL_GSEA_net <- function(expression_data, geneList = NULL, tissueType = NULL, mu
       return(list(marker = gs, cells_proportion = ep$Proportion))
     } else {
       data_all_sort <- geneList %>% arrange(desc(geneList[1]))
-      geneList = data_all_sort$logFC
-      names(geneList) <- row.names(data_all_sort)
+      geneList = data_all_sort[1]
       symbol_2 <- as.character(rownames(geneList))
       y <- clusterProfiler::GSEA(gene = geneList, TERM2GENE = gs, minGSSize = 3, pvalueCutoff = 0.05, pAdjustMethod = "BH", seed = 123)
     }
