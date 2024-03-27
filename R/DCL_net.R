@@ -66,7 +66,7 @@ DCL_net <- function(expression_data, geneList = NULL, tissueType = NULL, mult = 
                      R = 100, orgDb = org.Mm.eg.db, nCategory = 50,
                      expRow = "SYMBOL", bypassConverting = T,
                      color = "p.adj", returnNet = TRUE)
-    dcl_plot <- am$plot + scale_color_viridis_c(option = "B",name = "p.adj")
+    dcl_plot <- am$plot + scale_color_viridis_c(option = "C",name = "p.adj")
     
     
     # y <- clusterProfiler::enricher(eg_gene$ENTREZID, TERM2GENE=ggs, minGSSize=1,pvalueCutoff = 0.05,qvalueCutoff = 0.05,pAdjustMethod = "none")
@@ -143,7 +143,7 @@ DCL_net <- function(expression_data, geneList = NULL, tissueType = NULL, mult = 
                      R = 100, orgDb = org.Mm.eg.db, nCategory = 50,
                      expRow = "SYMBOL", bypassConverting = T, returnNet = TRUE)
     
-    dcl_plot <- am$plot + scale_color_viridis_c(option = "B",name = "p.adj")
+    dcl_plot <- am$plot + scale_color_viridis_c(option = "C",name = "p.adj")
     return(list(enricher = y, marker = gs, bnObject = am, 
                 dcl_plot = dcl_plot,
                 cells_proportion = combined_prop_df,
