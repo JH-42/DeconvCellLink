@@ -104,7 +104,7 @@ DCL_GSEA_net <- function(expression_data, geneList = NULL, tissueType = NULL, mu
     cat("SSMD function elapsed time:", end_time - start_time, "\n")
     
     # stop
-    stopCluster(cl)
+    parallel::stopCluster(cl)
     
     combined_proportion <- lapply(combined_results, function(x) x$Proportion)
     combined_marker_gene <- lapply(combined_results, function(x) x$marker_gene)
