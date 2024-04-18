@@ -92,7 +92,8 @@ DCL_GSEA_net <- function(expression_data, geneList = NULL, tissueType = NULL, mu
     combined_results <- foreach::foreach(tissue = mult_tissue, .packages = c("SSMD", "bcv")) %dopar% {
       library(SSMD)
       library(bcv)
-      ssmd_result <- SSMD(bulk_data = expression_data, tissue = tissue)
+      library(dplyr)
+      ssmd_result <- SSMD(bulk_data = as.matrix(expression_data), tissue = tissue)
       list(
         Proportion = ssmd_result$Proportion,
         marker_gene = ssmd_result$marker_gene,
