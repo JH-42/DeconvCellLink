@@ -31,16 +31,23 @@ DCL_LR_plot <- function(DCL_Object=DCL_Object, deg=NULL, expression_data=NULL, c
   cell_pairs <- cell_interactions %>%
     dplyr::select(from, to, strength) %>%
     distinct()
-  
-  ssmd_markers <- lapply(sapply(DCL_Object$tissue, switch, 
-                                "Inflammatory" = SSMD::Mouse_Cancer_core_marker,
-                                "Central Nervous System" = SSMD::Mouse_Brain_core_marker,
-                                "Hematopoietic System" = SSMD::Mouse_hematopoietic_core_marker,
-                                "Blood" = SSMD::Mouse_Blood_core_marker), 
-                         function(x) x[!is.na(x)])
-  
-  ssmd_markers <- unlist(ssmd_markers, recursive = FALSE)
-  names(ssmd_markers) <- sub("^.*\\.", "", names(ssmd_markers))
+
+  if (length(DCL_Object$tissue) > 1) {
+    ssmd_markers <- lapply(sapply(DCL_Object$tissue, switch, 
+                                  "Inflammatory" = SSMD::Mouse_Cancer_core_marker,
+                                  "Central Nervous System" = SSMD::Mouse_Brain_core_marker,
+                                  "Hematopoietic System" = SSMD::Mouse_hematopoietic_core_marker,
+                                  "Blood" = SSMD::Mouse_Blood_core_marker), 
+                           function(x) x[!is.na(x)])
+    ssmd_markers <- unlist(ssmd_markers, recursive = FALSE)
+    names(ssmd_markers) <- sub("^.*\\.", "", names(ssmd_markers))
+  } else {
+    ssmd_markers <- switch(DCL_Object$tissue,
+                           "Inflammatory" = SSMD::Mouse_Cancer_core_marker,
+                           "Central Nervous System" = SSMD::Mouse_Brain_core_marker,
+                           "Hematopoietic System" = SSMD::Mouse_hematopoietic_core_marker,
+                           "Blood" = SSMD::Mouse_Blood_core_marker)
+  }
   
   results <- data.frame(from = character(),
                         to = character(),
@@ -92,6 +99,8 @@ DCL_LR_plot <- function(DCL_Object=DCL_Object, deg=NULL, expression_data=NULL, c
   
   # Correlation analysis using expression data
   if (!is.null(expression_data)) {
+    results <- results[apply(results[, c("ligand", "receptor")], 1, function(x) all(x %in% rownames(expression_data))), ]
+    expression_data <- as.matrix(expression_data)
     results_with_cor <- results %>%
       rowwise() %>%
       mutate(cor = cor(expression_data[ligand, ], expression_data[receptor, ], method = cor_method)) %>%
