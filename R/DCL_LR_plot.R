@@ -129,19 +129,13 @@ DCL_LR_plot <- function(DCL_Object=DCL_Object, deg=NULL, expression_data=NULL, c
   scale_size(range = c(1, 5)) +
   labs(x = "Ligand-Receptor Interaction", y = "Cell-Cell Interaction", color = "Strength", size = "Correlation") +
   theme(
-    # Remove axis lines and ticks
     axis.line = element_blank(),
     axis.ticks = element_blank(),
-    # Remove axis text
     axis.text.x = element_text(angle = 45, hjust = 1),
-    # Remove plot background
     panel.background = element_blank(),
-    # Add grid lines
     panel.grid.major = element_line(color = "grey", size = 0.5), 
     panel.grid.minor = element_line(color = "grey", size = 0.25),
-    # Add a frame around the grid
     panel.border = element_rect(color = "black", fill = NA, size = 1),
-    # Adjust legend position
     legend.position = "right"
   )
   return(list(results = results, LR_plot = LR_plot))
