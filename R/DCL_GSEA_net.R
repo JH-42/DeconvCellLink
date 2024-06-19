@@ -46,7 +46,7 @@
 #'
 
 
-DCL_GSEA_net <- function(expression_data, geneList = NULL, tissueType = NULL, mult = FALSE, mult_tissue = NULL, numCores = 2) {
+DCL_GSEA_net <- function(expression_data, geneList = NULL, tissueType = NULL, mult = FALSE, mult_tissue = NULL, numCores = 2,hub = NULL) {
   combined_proportion <- list()
   combined_marker_gene <- list()
   combined_Escore <- list()
@@ -145,7 +145,7 @@ DCL_GSEA_net <- function(expression_data, geneList = NULL, tissueType = NULL, mu
     am <- bnpathplot(results = y,
                      exp = expression_data, qvalueCutOff = 0.05,cexLine = 0,
                      R = 100, orgDb = org.Mm.eg.db, nCategory = 50,
-                     expRow = "SYMBOL", bypassConverting = T,
+                     expRow = "SYMBOL", bypassConverting = T,hub=hub,
                      color = "enrichmentScore", returnNet = TRUE)
                               
     dcl_plot<-am$plot+scale_color_gradient2(name = "enrichmentScore",low = "#6DC2C5", mid = "white", high = "#aa0051", midpoint = 0)
