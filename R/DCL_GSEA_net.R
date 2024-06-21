@@ -52,7 +52,7 @@ DCL_GSEA_net <- function(expression_data, geneList = NULL, tissueType = NULL, mu
   combined_Escore <- list()
   combined_potential_modules <- list()
   set.seed(2024)
-  
+  expression_data = as.matrix(expression_data)
   if (!mult) {
     # single tissue
     ep <- SSMD(bulk_data = expression_data, tissue = tissueType)
