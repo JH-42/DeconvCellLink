@@ -86,11 +86,11 @@ DCL_GSEA_net <- function(expression_data, geneList = NULL, tissueType = NULL, mu
     cores <- numCores
     cl <- parallel::makeCluster(cores)
     doParallel::registerDoParallel(cl)
-    
+    set.seed(2024)
+
     # foreach cycle
     start_time <- Sys.time()
     combined_results <- foreach::foreach(tissue = mult_tissue, .packages = c("SSMD", "bcv")) %dopar% {
-      set.seed(2024)
       library(SSMD)
       library(bcv)
       library(dplyr)
