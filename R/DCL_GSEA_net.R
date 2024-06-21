@@ -51,7 +51,7 @@ DCL_GSEA_net <- function(expression_data, geneList = NULL, tissueType = NULL, mu
   combined_marker_gene <- list()
   combined_Escore <- list()
   combined_potential_modules <- list()
-  
+  set.seed(2024)
   
   if (!mult) {
     # single tissue
@@ -90,6 +90,7 @@ DCL_GSEA_net <- function(expression_data, geneList = NULL, tissueType = NULL, mu
     # foreach cycle
     start_time <- Sys.time()
     combined_results <- foreach::foreach(tissue = mult_tissue, .packages = c("SSMD", "bcv")) %dopar% {
+      set.seed(2024)
       library(SSMD)
       library(bcv)
       library(dplyr)
