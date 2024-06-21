@@ -51,7 +51,7 @@ DCL_GSEA_net <- function(expression_data, geneList = NULL, tissueType = NULL, mu
   combined_marker_gene <- list()
   combined_Escore <- list()
   combined_potential_modules <- list()
-  set.seed(2024)
+  set.seed(123)
   expression_data = as.matrix(expression_data)
   if (!mult) {
     # single tissue
@@ -86,7 +86,7 @@ DCL_GSEA_net <- function(expression_data, geneList = NULL, tissueType = NULL, mu
     cores <- numCores
     cl <- parallel::makeCluster(cores)
     doParallel::registerDoParallel(cl)
-    set.seed(2024)
+    set.seed(123)
 
     # foreach cycle
     start_time <- Sys.time()
