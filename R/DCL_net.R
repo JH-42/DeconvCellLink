@@ -43,13 +43,13 @@
 
 
 
-DCL_net <- function(expression_data, geneList = NULL, tissueType = NULL, mult = FALSE, mult_tissue = NULL,numCores=2) {
+DCL_net <- function(expression_data, geneList = NULL, tissueType = NULL, mult = FALSE, mult_tissue = NULL,numCores=2,hub=NULL) {
   combined_proportion <- list()
   combined_marker_gene <- list()
   combined_Escore <- list()
   combined_potential_modules <- list()
   
-  
+  expression_data<-as.matrix(expression_data)
   if (!mult) {
     # single tissue
     ep <- SSMD(bulk_data = expression_data, tissue = tissueType)
@@ -141,7 +141,7 @@ DCL_net <- function(expression_data, geneList = NULL, tissueType = NULL, mult = 
     am <- bnpathplot(results = y,
                      exp = expression_data, qvalueCutOff = 0.05,cexLine = 0,
                      R = 100, orgDb = org.Mm.eg.db, nCategory = 50,
-                     expRow = "SYMBOL", bypassConverting = T, returnNet = TRUE)
+                     expRow = "SYMBOL", bypassConverting = T, returnNet = TRUE,hub=hub)
     
     dcl_plot <- am$plot + scale_color_viridis_c(option = "C",name = "p.adj")
     return(list(enricher = y, marker = gs, bnObject = am, 
