@@ -48,7 +48,7 @@ DCL_net <- function(expression_data, geneList = NULL, tissueType = NULL, mult = 
   combined_marker_gene <- list()
   combined_Escore <- list()
   combined_potential_modules <- list()
-  setseed(seed)
+  set.seed(seed)
   expression_data<-as.matrix(expression_data)
   if (!mult) {
     # single tissue
@@ -81,7 +81,7 @@ DCL_net <- function(expression_data, geneList = NULL, tissueType = NULL, mult = 
     cl <- parallel::makeCluster(cores)
     doParallel::registerDoParallel(cl)
     start_time <- Sys.time()
-    setseed(seed)
+    set.seed(seed)
     combined_results <- foreach::foreach(tissue = mult_tissue, 
                                          .packages = c("SSMD", "bcv")) %dopar% {
                                            library(SSMD)
