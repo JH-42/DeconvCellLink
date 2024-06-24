@@ -25,10 +25,16 @@ Imports:
     stringr,
     foreach,
     doParallel,
-    parallel
+    parallel,
+    pheatmap,
+    tidyr,
+    nnls
 Depends: 
     CBNplot,
     SSMD
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Remotes:
+    JH-42/SSMD,
+    noriakis/CBNplot
