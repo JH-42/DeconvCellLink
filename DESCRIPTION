@@ -26,7 +26,6 @@ Imports:
     foreach,
     doParallel,
     parallel,
-    pheatmap,
     tidyr,
     nnls
 Depends: 
