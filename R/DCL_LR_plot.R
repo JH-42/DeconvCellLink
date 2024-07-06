@@ -20,23 +20,22 @@ DCL_LR_plot <- function(DCL_Object=DCL_Object, deg=NULL, expression_data=NULL, c
   arcs <- DCL_Object$bnObject$av$arcs
   str_data <- DCL_Object$bnObject$str
   arcs_df <- data.frame(from = arcs[,1], to = arcs[,2])
+  
   cell_interactions <- str_data %>%
     inner_join(arcs_df, by = c("from", "to")) %>%
-    filter(strength > 0.6) %>%
+    filter(strength > 0.6)  # 保持原有的 strength > 0.6 筛选
+  
+  cell_pairs <- cell_interactions %>%
     dplyr::select(from, to, strength) %>%
     distinct()
   
-
-  
   cell_genes <- inner_join(DCL_Object$marker, gene_scores, by = "geneID")[,1:2]
   gene_interactions <- LRI_mouse$LRI_curated
-  # preprocess LRI
-  cell_pairs <- gene_interactions %>%
+  gene_interactions <- gene_interactions %>%
     separate(LRI, into = c("ligand", "receptor"), sep = ":") %>%
     separate_rows(ligand, sep = "_") %>%
     separate_rows(receptor, sep = "_") %>%
     distinct()
-
   
   if (length(DCL_Object$tissue) > 1) {
     ssmd_markers <- lapply(sapply(DCL_Object$tissue, switch, 
