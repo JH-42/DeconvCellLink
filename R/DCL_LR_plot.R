@@ -14,10 +14,20 @@
 DCL_LR_plot <- function(DCL_Object=DCL_Object, deg=NULL, expression_data=NULL, cor_method="pearson", cor_threshold=0) {
   
   gene_scores <- data.frame(DCL_Object$gene_scores)
-  gene_scores$geneID<-row.names(gene_scores)
-  names(gene_scores)<-c("gene_score","geneID")
+  gene_scores$geneID <- row.names(gene_scores)
+  names(gene_scores) <- c("gene_score","geneID")
   
-  cell_interactions <- DCL_Object$bnObject$str %>% filter(strength > 0.6)#screening strength >0.6
+  arcs <- DCL_Object$bnObject$av$arcs
+  str_data <- DCL_Object$bnObject$str
+  arcs_df <- data.frame(from = arcs[,1], to = arcs[,2])
+  cell_interactions <- str_data %>%
+    inner_join(arcs_df, by = c("from", "to")) %>%
+    filter(strength > 0.6) %>%
+    dplyr::select(from, to, strength) %>%
+    distinct()
+  
+
+  
   cell_genes <- inner_join(DCL_Object$marker, gene_scores, by = "geneID")[,1:2]
   gene_interactions <- LRI_mouse$LRI_curated
   # preprocess LRI
@@ -26,12 +36,8 @@ DCL_LR_plot <- function(DCL_Object=DCL_Object, deg=NULL, expression_data=NULL, c
     separate_rows(ligand, sep = "_") %>%
     separate_rows(receptor, sep = "_") %>%
     distinct()
-  
-  # cell_pairs in cell_interactions 
-  cell_pairs <- cell_interactions %>%
-    dplyr::select(from, to, strength) %>%
-    distinct()
 
+  
   if (length(DCL_Object$tissue) > 1) {
     ssmd_markers <- lapply(sapply(DCL_Object$tissue, switch, 
                                   "Inflammatory" = SSMD::Mouse_Cancer_core_marker,
@@ -124,19 +130,19 @@ DCL_LR_plot <- function(DCL_Object=DCL_Object, deg=NULL, expression_data=NULL, c
            LR_interaction = factor(LR_interaction, levels = lr_interactions))
   
   LR_plot <- ggplot(df, aes(x = cell_interaction, y = LR_interaction, color = strength, size = cor)) +
-  geom_point() +
-  scale_color_gradient(low = "blue", high = "red") +
-  scale_size(range = c(1, 5)) +
-  labs(x = "Ligand-Receptor Interaction", y = "Cell-Cell Interaction", color = "Strength", size = "Correlation") +
-  theme(
-    axis.line = element_blank(),
-    axis.ticks = element_blank(),
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    panel.background = element_blank(),
-    panel.grid.major = element_line(color = "grey", size = 0.5), 
-    panel.grid.minor = element_line(color = "grey", size = 0.25),
-    panel.border = element_rect(color = "black", fill = NA, size = 1),
-    legend.position = "right"
-  )
+    geom_point() +
+    scale_color_gradient(low = "blue", high = "red") +
+    scale_size(range = c(1, 5)) +
+    labs(x = "Ligand-Receptor Interaction", y = "Cell-Cell Interaction", color = "Strength", size = "Correlation") +
+    theme(
+      axis.line = element_blank(),
+      axis.ticks = element_blank(),
+      axis.text.x = element_text(angle = 45, hjust = 1),
+      panel.background = element_blank(),
+      panel.grid.major = element_line(color = "grey", size = 0.5), 
+      panel.grid.minor = element_line(color = "grey", size = 0.25),
+      panel.border = element_rect(color = "black", fill = NA, size = 1),
+      legend.position = "right"
+    )
   return(list(results = results, LR_plot = LR_plot))
 }
