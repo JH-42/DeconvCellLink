@@ -31,7 +31,7 @@ DCL_LR_plot <- function(DCL_Object=DCL_Object, deg=NULL, expression_data=NULL, c
   cell_genes <- inner_join(DCL_Object$marker, gene_scores, by = "geneID")[,1:2]
   gene_interactions <- LRI_mouse$LRI_curated
   # preprocess LRI
-  gene_interactions <- gene_interactions %>%
+  cell_pairs <- gene_interactions %>%
     separate(LRI, into = c("ligand", "receptor"), sep = ":") %>%
     separate_rows(ligand, sep = "_") %>%
     separate_rows(receptor, sep = "_") %>%
