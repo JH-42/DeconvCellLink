@@ -144,7 +144,7 @@ DCL_net <- function(expression_data, geneList = NULL, tissueType = NULL, mult = 
                      R = 100, orgDb = org.Mm.eg.db, nCategory = 50,
                      expRow = "SYMBOL", bypassConverting = T, returnNet = TRUE,hub=hub)
     
-    dcl_plot <- am$plot + scale_color_viridis_c(option = "C",name = "p.adj")
+    dcl_plot <- am$plot + scale_color_manual(colorRampPalette(c("#F5FB67", "#9E2EA4", "#0D0887"))(100))
     return(list(enricher = y, marker = gs, bnObject = am, 
                 dcl_plot = dcl_plot,
                 cells_proportion = combined_prop_df,
