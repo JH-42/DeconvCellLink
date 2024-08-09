@@ -59,7 +59,7 @@ DCL_obj <- DCL_GSEA_net(expression_data = exp,geneList = geneList,tissueType = N
              mult_tissue = c("Inflammatory","Central Nervous System"),numCores = 12)
 DCL_obj$bnObject
 ```
-![DCL Plot]("https://github.com/JH-42/DeconvCellLink/blob/main/img/cell-cell.png)
+![DCL Plot](https://github.com/JH-42/DeconvCellLink/blob/main/img/cell-cell.png)
 
 ```
 pheatmap::pheatmap(DCL_obj$cells_proportion,scale = "row")
@@ -69,7 +69,7 @@ pheatmap::pheatmap(DCL_obj$cells_proportion,scale = "row")
 LR_plot<-DCL_GSEA_net_interaction(DCL_obj,deg = deg, expression_data = exp,cor_method = "pearson",cor_threshold = 0)#deg = deg list
 LR_plot$LR_plot
 ```
-![LR Plot]("https://github.com/JH-42/DeconvCellLink/blob/main/img/LR.png)
+![LR Plot](https://github.com/JH-42/DeconvCellLink/blob/main/img/LR.png)
 
 
 ## Arguments
