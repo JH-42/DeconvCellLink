@@ -73,7 +73,7 @@ LR_plot$LR_plot
 
 
 ## Arguments
-* `exp_dat`        A data matrix containing the expression data (CPM/TPM).
+* `exp_dat`        A data matrix containing the expression data log(CPM/TPM).
 * `geneList`        A gene list, such as a list of differentially expressed genes (DEgenes).
 * `tissueType`        The tissue type of the expression data. Choose one of the following: 'Inflammatory', 'Central Nervous System', 'Hematopoietic System', 'Blood'.
 *  `mult` Whether to use multi-tissue annotations.
