@@ -87,3 +87,9 @@ the following components:
 
 * `bnObject`        Deconvolution cell link from Bayesian Network.
 * `cells_proportion`        Deconvolution Cell proportion from SSMD.
+
+## Citation
+
+If you use PathDeconv in your research, please cite it as follows:
+
+Junhao Wang, Zhaoqian Zhong etc.al . (2024). DeconvCellLink: Approach for Infer potential deconvolution cell types interactions from mouse bulk RNA-seq data. GitHub repository: https://github.com/JH-42/DeconvCellLink
