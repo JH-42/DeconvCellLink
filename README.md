@@ -54,6 +54,9 @@ if (!require(foreach)) BiocManager::install("foreach")
 #single tissue cell types
 DCL_obj <- DCL_net(exp_dat,geneList,tissueType = "Inflammatory")
 
+DCL_obj <- DCL_GSEA_net(expression_data = exp,geneList = geneList,tissueType = NULL,mult = T,
+             mult_tissue = "Inflammatory",numCores = 12)
+
 #multiple tissue cell types
 DCL_obj <- DCL_GSEA_net(expression_data = exp,geneList = geneList,tissueType = NULL,mult = T,
              mult_tissue = c("Inflammatory","Central Nervous System"),numCores = 12)
