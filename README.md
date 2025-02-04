@@ -94,7 +94,7 @@ the following components:
 ## Citation
 
 If you use PathDeconv in your research, please cite it as follows:
-Junhao Wang, Zhaoqian Zhong etc.al . (2024). DeconvCellLink: Approach for Infer potential deconvolution cell types interactions from mouse bulk RNA-seq data. GitHub repository: https://github.com/JH-42/DeconvCellLink
+**Junhao Wang, Zhaoqian Zhong etc.al . (2024). DeconvCellLink: Approach for Infer potential deconvolution cell types interactions from mouse bulk RNA-seq data. GitHub repository: https://github.com/JH-42/DeconvCellLink**
 
 If you use LR_plot function in your research, please cite this paper as follows:
-Lagger C, Ursu E, Equey A, Avelar RA, Pisco AO, Tacutu R, de Magalhães JP. scDiffCom: a tool for differential analysis of cell-cell interactions provides a mouse atlas of aging changes in intercellular communication. Nat Aging. 2023 Nov;3(11):1446-1461. 
+**Lagger C, Ursu E, Equey A, Avelar RA, Pisco AO, Tacutu R, de Magalhães JP. scDiffCom: a tool for differential analysis of cell-cell interactions provides a mouse atlas of aging changes in intercellular communication. Nat Aging. 2023 Nov;3(11):1446-1461.** 
