@@ -1,20 +1,20 @@
 Package: DeconvCellLink
 Type: Package
-Title: Linking Deconvolution Cell types
+Title: Linking Deconvolution Cell Types
 Version: 1.1.0
-Author: person("JunHao","Wang",email="mirrersan@foxmail.com",role= c("aut","cre"))
+Authors@R: person("JunHao", "Wang", email = "mirrersan@foxmail.com", role = c("aut", "cre"))
 Maintainer: JunHao <mirrersan@foxmail.com>
-Description: Infer potential deconvolution cell types interactions from mouse bulk RNA-seq data
-    Use four spaces when indenting paragraphs within the Description.
+Description: Infer potential deconvolution cell types interactions from mouse bulk RNA-seq data.
+    This package provides methods to analyze and visualize cell-cell communications
+    derived from deconvolution results of bulk RNA-seq data in mouse models.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
 Imports: 
     bcv,
-    BiocManager,
     bnlearn,
-    bnviewer,
+    CBNplot,
     clusterProfiler,
     dplyr,
     ggraph,
@@ -22,6 +22,7 @@ Imports:
     org.Mm.eg.db,
     remotes,
     reshape2,
+    SSMD,
     stringr,
     foreach,
     doParallel,
@@ -29,8 +30,7 @@ Imports:
     tidyr,
     nnls
 Depends: 
-    CBNplot,
-    SSMD
+    R (>= 4.0.0)
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
