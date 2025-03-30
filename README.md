@@ -1,4 +1,4 @@
-# DeconvCellLink: Approach for Infer potential deconvolution cell types interactions from mouse bulk RNA-seq data
+# DeconvCellLink: Approach for Infer potential deconvolution cell types communication from mouse bulk RNA-seq data
 
 ## Update
 
