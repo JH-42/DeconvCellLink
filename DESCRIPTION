@@ -6,7 +6,7 @@ Author: person("JunHao","Wang",email="mirrersan@foxmail.com",role= c("aut","cre"
 Maintainer: JunHao <mirrersan@foxmail.com>
 Description: Infer potential deconvolution cell types interactions from mouse bulk RNA-seq data
     Use four spaces when indenting paragraphs within the Description.
-License: Apache License (>= 2)
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
