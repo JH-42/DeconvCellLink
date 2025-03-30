@@ -20,14 +20,6 @@ install.packages("remotes")
 install.packages("BiocManager")
 BiocManager::install("JH-42/DeconvCellLink")
 ```
-## Dependency
-
-```
-if (!require(BiocManager)) install.packages("BiocManager")
-if (!require(remotes)) install.packages("remotes")
-BiocManager::install("JH-42/DeconvCellLink")
-
-```
 
 ## Usage
 
