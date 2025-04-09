@@ -69,7 +69,7 @@ the following components:
 ## Citation
 
 If you use DeconvCellLink in your research, please cite it as follows:  
-**Wang, J.; Zhong, Z.; Luo, H.; Han, Q.; Wu, K.; Jiang, A.; Chen, L.; Gao, Y.; Jiang, Y. Modulation of brain immune microenvironment and cellular dynamics in systemic inflammation. Theranostics 2025, 15 (11), 5153-5171. DOI: 10.7150/thno.107061.**
+**Wang J, Zhong Z, Luo H, Han Q, Wu K, Jiang A, Chen L, Gao Y, Jiang Y.  2025. Modulation of brain immune microenvironment and cellular dynamics in systemic inflammation. Theranostics. 15(11):5153-5171.**
 
 If you use LR_plot function in your research, please cite this paper as follows:  
 **Lagger C, Ursu E, Equey A, Avelar RA, Pisco AO, Tacutu R, de Magalhães JP. scDiffCom: a tool for differential analysis of cell-cell interactions provides a mouse atlas of aging changes in intercellular communication. Nat Aging. 2023 Nov;3(11):1446-1461.** 
