@@ -110,7 +110,7 @@ DCL_net <- function(expression_data, geneList = NULL, tissueType = NULL, mult = 
     df <- as.matrix(do.call(cbind, ep))
     
     {
-      gs <- melt(df, varnames = c("cellName", "geneID"), 
+      gs <- reshape2::melt(df, varnames = c("cellName", "geneID"), 
                  value.name = "expression")
       gs <- gs[, c("geneID", "expression")]
       colnames(gs) <- c("cellName", "geneID")
