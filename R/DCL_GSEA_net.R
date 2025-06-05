@@ -119,7 +119,7 @@ DCL_GSEA_net <- function(expression_data, geneList = NULL, tissueType = NULL, mu
     
     df <- as.matrix(do.call(cbind, ep))
     {
-      gs <- melt(df, varnames = c("cellName", "geneID"), value.name = "expression")
+      gs <- reshape2::melt(df, varnames = c("cellName", "geneID"), value.name = "expression")
       gs <- gs[, c("geneID", "expression")]
       colnames(gs) <- c("cellName", "geneID")
       row.names(gs) <- gs$SYMBOL
