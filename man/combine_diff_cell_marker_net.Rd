@@ -2,21 +2,23 @@
 % Please edit documentation in R/combine_diff_cell_marker_net.R
 \name{combine_diff_cell_marker_net}
 \alias{combine_diff_cell_marker_net}
-\title{Title}
+\title{Build a cell-cell network from a custom cell-type marker table}
 \usage{
 combine_diff_cell_marker_net(expression_data, geneList = NULL, cell_markers)
 }
 \arguments{
-\item{expression_data}{the expression_data input: CPM/TPM}
+\item{expression_data}{Expression matrix, log(CPM/TPM), with gene symbols as row names.}
 
-\item{geneList}{DEgene list or other gene list， defult=NULL}
+\item{geneList}{A character vector of gene symbols (e.g. differentially expressed genes). Default is NULL.}
 
-\item{tissueType}{the one of 'Inflammatory', 'Central Nervous System', 'Hematopoietic System','Blood'}
+\item{cell_markers}{A marker table with columns 'cellName' and 'geneID'.}
 }
 \value{
 A list containing the following objects:
-  \item{enrichmentResult}{Enrichment analysis of cell types specific marker.}
+  \item{enricher}{Over-representation result on the cell-type markers.}
+  \item{marker}{The cell-type marker table used.}
+  \item{bnObject}{Deconvolution cell link from Bayesian Network.}
 }
 \description{
-Title
+Build a cell-cell network from a custom cell-type marker table
 }

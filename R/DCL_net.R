@@ -1,8 +1,13 @@
 #' Calculate Deconvolution Cell Link for Bulk RNAseq data
 #'
-#' @param expression_data A data frame containing the expression data (CPM/TPM).
-#' @param geneList A gene list, such as a list of differentially expressed genes (DEgenes), to be used for SSMD calculation. Default is NULL.
-#' @param tissueType The tissue type of the expression data. Choose one of the following: 'Inflammatory', 'Central Nervous System', 'Hematopoietic System', 'Blood'.
+#' @param expression_data Expression matrix, log(CPM/TPM), with gene symbols as row names and samples as columns.
+#' @param geneList A character vector of gene symbols (e.g. differentially expressed genes) for over-representation. Default is NULL.
+#' @param tissueType Tissue for the single-tissue run (mult = FALSE). One of 'Inflammatory', 'Central Nervous System', 'Hematopoietic System', 'Blood'.
+#' @param mult Use one or more tissues via mult_tissue. Default FALSE.
+#' @param mult_tissue Tissue(s) to use when mult = TRUE.
+#' @param numCores Cores for the parallel SSMD step. Default 2.
+#' @param hub Optional hub argument passed to the Bayesian network plot. Default NULL.
+#' @param seed Random seed for reproducibility. Default 123.
 #'
 #' @return A list containing the following objects:
 #'   \item{bnObject}{Deconvolution cell link from Bayesian Network.}
@@ -12,27 +17,11 @@
 #'
 #' @export
 #'
-#' @import BiocManager
-#' @import remotes
 #' @importFrom SSMD SSMD
 #' @importFrom clusterProfiler enricher
 #' @importFrom org.Mm.eg.db org.Mm.eg.db
-#' @description
-#' This package provides functionality for [brief description of what your package does].
-#'
-#' To install the required packages, please make sure you have BiocManager and remotes installed. If not, you can install them using the following code:
-#' \preformatted{
-#' if (!require(BiocManager))
-#'   install.packages("BiocManager")
-#'
-#' if (!require(remotes))
-#'   install.packages("remotes")
-#' }
-#'
-#' To install this package, you can use the following code:
-#' \preformatted{
-#' BiocManager::install("JH-42/DevconCellLink")
-#' }
+#' @importFrom dplyr %>%
+#' @importFrom foreach %dopar%
 #'
 #' @references
 #' - Jun-Hao Wang#, Zhao-Qian Zhong#, Hai-Hua Luo#, Qi-Zheng Han, Kan Wu, Li Chen, Yanxia Gao*, Yong Jiang*. Comparative Analysis of Brain Inflammation Reveals New Insights into Sepsis Associated Encephalopathy Progression
@@ -53,20 +42,22 @@ DCL_net <- function(expression_data, geneList = NULL, tissueType = NULL, mult = 
   if (!mult) {
     # single tissue
     ep <- SSMD(bulk_data = expression_data, tissue = tissueType)
-    gs <- ep$marker_gene
-    
+    # reshape the per-celltype marker_gene list into a 2-col TERM2GENE df for enricher/GSEA
+    gs <- data.frame(cellName = rep(names(ep$marker_gene), lengths(ep$marker_gene)),
+                     geneID = unlist(ep$marker_gene, use.names = FALSE))
+
     if (is.null(geneList)) {
       return(list(marker = gs, cells_proportion = ep$Proportion))
     } else {
-      y <- clusterProfiler::enricher(gene = geneList, TERM2GENE = ggs, minGSSize = 3, pvalueCutoff = 0.05, qvalueCutoff = 0.05, pAdjustMethod = "BH")
+      y <- clusterProfiler::enricher(gene = geneList, TERM2GENE = gs, minGSSize = 3, pvalueCutoff = 0.05, qvalueCutoff = 0.05, pAdjustMethod = "BH")
     }
-    
-    am <- bnpathplot(results = y,
+
+    am <- CBNplot::bnpathplot(results = y,
                      exp = expression_data, qvalueCutOff = 0.05,cexLine = 0,
                      R = 100, orgDb = org.Mm.eg.db, nCategory = 50,
                      expRow = "SYMBOL", bypassConverting = T,
                      color = "p.adj", returnNet = TRUE)
-    dcl_plot <- am$plot + scale_color_viridis_c(option = "C",name = "p.adj")
+    dcl_plot <- am$plot + ggplot2::scale_color_viridis_c(option = "C",name = "p.adj")
     
     
     # y <- clusterProfiler::enricher(eg_gene$ENTREZID, TERM2GENE=ggs, minGSSize=1,pvalueCutoff = 0.05,qvalueCutoff = 0.05,pAdjustMethod = "none")
@@ -81,8 +72,8 @@ DCL_net <- function(expression_data, geneList = NULL, tissueType = NULL, mult = 
     cl <- parallel::makeCluster(cores)
     doParallel::registerDoParallel(cl)
     start_time <- Sys.time()
-    set.seed(seed)
-    combined_results <- foreach::foreach(tissue = mult_tissue, 
+    doRNG::registerDoRNG(seed)
+    combined_results <- foreach::foreach(tissue = mult_tissue,
                                          .packages = c("SSMD", "bcv")) %dopar% {
                                            library(SSMD)
                                            library(bcv)
@@ -96,7 +87,7 @@ DCL_net <- function(expression_data, geneList = NULL, tissueType = NULL, mult = 
                                          }
     end_time <- Sys.time()
     cat("SSMD function elapsed time:", end_time - start_time,"\n")
-    stopCluster(cl)
+    parallel::stopCluster(cl)
     combined_proportion <- lapply(combined_results, function(x) x$Proportion)
     combined_marker_gene <- lapply(combined_results, function(x) x$marker_gene)
     combined_Escore <- lapply(combined_results, function(x) x$Escore)
@@ -115,16 +106,6 @@ DCL_net <- function(expression_data, geneList = NULL, tissueType = NULL, mult = 
       gs <- gs[, c("geneID", "expression")]
       colnames(gs) <- c("cellName", "geneID")
       row.names(gs) <- gs$SYMBOL
-      # symbol <- as.character(gs[, 2])
-      # eg_gs <- bitr(symbol, fromType = "SYMBOL", toType = "ENTREZID", 
-      #               OrgDb = "org.Mm.eg.db")
-      # row.names(gs) <- gs$SYMBOL
-      # row.names(eg_gs) <- eg_gs$SYMBOL
-      # colnames(eg_gs) <- c("geneID", "ENTREZID")
-      # ggs <- merge(gs, eg_gs, by = "geneID")
-      # ggs$geneID <- NULL
-      # colnames(ggs) <- c("cellName", "geneID")
-      # ggs <- ggs %>% distinct(cellName, geneID)
     }
     
     if (is.null(geneList)) {
@@ -135,16 +116,16 @@ DCL_net <- function(expression_data, geneList = NULL, tissueType = NULL, mult = 
     y@keytype <- "ENTREZID"
     y@organism <- "Mus musculus"
     
-    n1 <- bitr(row.names(expression_data), fromType = "SYMBOL", toType = "ENTREZID", OrgDb = "org.Mm.eg.db")
+    n1 <- clusterProfiler::bitr(row.names(expression_data), fromType = "SYMBOL", toType = "ENTREZID", OrgDb = "org.Mm.eg.db")
     n2 <- expression_data[n1$SYMBOL, ]
     rownames(n2) <- n1$ENTREZID
-    
-    am <- bnpathplot(results = y,
+
+    am <- CBNplot::bnpathplot(results = y,
                      exp = expression_data, qvalueCutOff = 0.05,cexLine = 0,
                      R = 100, orgDb = org.Mm.eg.db, nCategory = 50,
                      expRow = "SYMBOL", bypassConverting = T, returnNet = TRUE,hub=hub)
-    
-    dcl_plot <- am$plot + scale_color_manual(colorRampPalette(c("#F5FB67", "#9E2EA4", "#0D0887"))(100))
+
+    dcl_plot <- am$plot + ggplot2::scale_color_manual(colorRampPalette(c("#F5FB67", "#9E2EA4", "#0D0887"))(100))
     return(list(enricher = y, marker = gs, bnObject = am, 
                 dcl_plot = dcl_plot,
                 cells_proportion = combined_prop_df,

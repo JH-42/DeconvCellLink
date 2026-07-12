@@ -2,10 +2,10 @@
 % Please edit documentation in R/celltype_compareEnrichment.r
 \name{compareEnrichment}
 \alias{compareEnrichment}
-\title{Title}
+\title{Compare functional enrichment across deconvolution cell types}
 \usage{
 compareEnrichment(
-  celltypeObject,
+  DCL_Object = DCL_Object,
   celltypes,
   enrichType,
   showCategory = 5,
@@ -16,17 +16,27 @@ compareEnrichment(
 )
 }
 \arguments{
-\item{celltypeObject}{the object from celltype or celltype_combine}
+\item{DCL_Object}{The object returned by DCL_net or DCL_GSEA_net.}
 
-\item{celltypes}{choose your favorite cell types E.g: "Monocyte"}
+\item{celltypes}{Cell types to compare, matched by name. E.g. "Monocyte".}
 
-\item{enrichType}{the one of 'GO', 'Reactome', 'KEGG'}
+\item{enrichType}{One of 'GO', 'Reactome', 'KEGG'.}
+
+\item{showCategory}{Number of categories to show per cell type. Default 5.}
+
+\item{pvalueCutoff}{P-value cutoff for enrichment. Default 1.}
+
+\item{pAdjustMethod}{Multiple-testing adjustment method. Default "BH".}
+
+\item{minGSSize}{Minimum gene set size. Default 1.}
+
+\item{qvalueCutoff}{Q-value cutoff for enrichment. Default 1.}
 }
 \value{
 A list containing the following objects:
-  \item{bnObject}{Deconvolution cell link from Bayesian Network.}
-  \item{cells_proportion}{Deconvolution Cell proportion from SSMD.}
+  \item{enrichmentResult}{compareCluster result across the chosen cell types.}
+  \item{comparePlot}{Dot plot of the compared enrichment.}
 }
 \description{
-Title
+Compare functional enrichment across deconvolution cell types
 }

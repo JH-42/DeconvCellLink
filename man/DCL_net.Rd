@@ -9,15 +9,28 @@ DCL_net(
   geneList = NULL,
   tissueType = NULL,
   mult = FALSE,
-  mult_tissue = NULL
+  mult_tissue = NULL,
+  numCores = 2,
+  hub = NULL,
+  seed = 123
 )
 }
 \arguments{
-\item{expression_data}{A data frame containing the expression data (CPM/TPM).}
+\item{expression_data}{Expression matrix, log(CPM/TPM), with gene symbols as row names and samples as columns.}
 
-\item{geneList}{A gene list, such as a list of differentially expressed genes (DEgenes), to be used for SSMD calculation. Default is NULL.}
+\item{geneList}{A character vector of gene symbols (e.g. differentially expressed genes) for over-representation. Default is NULL.}
 
-\item{tissueType}{The tissue type of the expression data. Choose one of the following: 'Inflammatory', 'Central Nervous System', 'Hematopoietic System', 'Blood'.}
+\item{tissueType}{Tissue for the single-tissue run (mult = FALSE). One of 'Inflammatory', 'Central Nervous System', 'Hematopoietic System', 'Blood'.}
+
+\item{mult}{Use one or more tissues via mult_tissue. Default FALSE.}
+
+\item{mult_tissue}{Tissue(s) to use when mult = TRUE.}
+
+\item{numCores}{Cores for the parallel SSMD step. Default 2.}
+
+\item{hub}{Optional hub argument passed to the Bayesian network plot. Default NULL.}
+
+\item{seed}{Random seed for reproducibility. Default 123.}
 }
 \value{
 A list containing the following objects:
@@ -25,22 +38,8 @@ A list containing the following objects:
   \item{cells_proportion}{Deconvolution Cell proportion from SSMD.}
 }
 \description{
-This package provides functionality for [brief description of what your package does].
-
-To install the required packages, please make sure you have BiocManager and remotes installed. If not, you can install them using the following code:
-\preformatted{
-if (!require(BiocManager))
-  install.packages("BiocManager")
-
-if (!require(remotes))
-  install.packages("remotes")
-}
-
-To install this package, you can use the following code:
-\preformatted{
-BiocManager::install("JH-42/DevconCellLink")
-}
+Calculate Deconvolution Cell Link for Bulk RNAseq data
 }
 \references{
-- Jun-Hao Wang#, Zhao-Qian Zhong#, Hai-Hua Luo#, Qi-Zheng Han, Kan Wu, Li Chen, Yanxia Gao, Yong Jiang*. Comparative Analysis of Brain Inflammation Reveals New Insights into Sepsis Associated Encephalopathy Progression
+- Jun-Hao Wang#, Zhao-Qian Zhong#, Hai-Hua Luo#, Qi-Zheng Han, Kan Wu, Li Chen, Yanxia Gao*, Yong Jiang*. Comparative Analysis of Brain Inflammation Reveals New Insights into Sepsis Associated Encephalopathy Progression
 }

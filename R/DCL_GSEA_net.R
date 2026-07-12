@@ -1,14 +1,15 @@
 #' Calculate Deconvolution Cell Link for Bulk RNAseq data
 #'
-#' @param expression_data A data frame containing the expression data (CPM/TPM).
-#' @param geneList A list of differentially expressed genes (DEgenes), to be used for SSMD calculation. Default is NULL.
-#' @param tissueType The tissue type of the expression data. Choose one of the following: 'Inflammatory', 'Central Nervous System', 'Hematopoietic System', 'Blood'.
-#' @param mult Whether to use multi-tissue annotations.
-#' @param mult_tissue Which tissue annotations to use.
-#' @param numCores How many cores to use.
-#' 
-#' 
-#' 
+#' @param expression_data Expression matrix, log(CPM/TPM), with gene symbols as row names and samples as columns.
+#' @param geneList A data.frame with gene symbols as row names and a ranking metric (e.g. logFC) in the first column, covering all tested genes. Default is NULL.
+#' @param tissueType Tissue for the single-tissue run (mult = FALSE). One of 'Inflammatory', 'Central Nervous System', 'Hematopoietic System', 'Blood'.
+#' @param mult Use one or more tissues via mult_tissue. Default FALSE.
+#' @param mult_tissue Tissue(s) to use when mult = TRUE.
+#' @param numCores Cores for the parallel SSMD step. Default 2.
+#' @param hub Optional hub argument passed to the Bayesian network plot. Default NULL.
+#' @param seed Random seed for reproducibility. Default 123.
+#'
+
 #' @return A list containing the following objects:
 #'   \item{bnObject}{Deconvolution cell link from Bayesian Network.}
 #'   \item{cells_proportion}{Deconvolution Cell proportion from SSMD.}
@@ -17,27 +18,9 @@
 #'
 #' @export
 #'
-#' @import BiocManager
-#' @import remotes
 #' @importFrom SSMD SSMD
 #' @importFrom clusterProfiler enricher
 #' @importFrom org.Mm.eg.db org.Mm.eg.db
-#' @description
-#' This package provides functionality for [brief description of what your package does].
-#'
-#' To install the required packages, please make sure you have BiocManager and remotes installed. If not, you can install them using the following code:
-#' \preformatted{
-#' if (!require(BiocManager))
-#'   install.packages("BiocManager")
-#'
-#' if (!require(remotes))
-#'   install.packages("remotes")
-#' }
-#'
-#' To install this package, you can use the following code:
-#' \preformatted{
-#' BiocManager::install("JH-42/DevconCellLink")
-#' }
 #'
 #' @references
 #' - Jun-Hao Wang#, Zhao-Qian Zhong#, Hai-Hua Luo#, Qi-Zheng Han, Kan Wu, Li Chen, Yanxia Gao*, Yong Jiang*. Comparative Analysis of Brain Inflammation Reveals New Insights into Sepsis Associated Encephalopathy Progression
@@ -46,35 +29,37 @@
 #'
 
 
-DCL_GSEA_net <- function(expression_data, geneList = NULL, tissueType = NULL, mult = FALSE, mult_tissue = NULL, numCores = 2,hub = NULL) {
+DCL_GSEA_net <- function(expression_data, geneList = NULL, tissueType = NULL, mult = FALSE, mult_tissue = NULL, numCores = 2,hub = NULL,seed = 123) {
   combined_proportion <- list()
   combined_marker_gene <- list()
   combined_Escore <- list()
   combined_potential_modules <- list()
-  set.seed(123)
+  set.seed(seed)
   expression_data = as.matrix(expression_data)
   if (!mult) {
     # single tissue
     ep <- SSMD(bulk_data = expression_data, tissue = tissueType)
-    gs <- ep$marker_gene
-    
+    # reshape the per-celltype marker_gene list into a 2-col TERM2GENE df for enricher/GSEA
+    gs <- data.frame(cellName = rep(names(ep$marker_gene), lengths(ep$marker_gene)),
+                     geneID = unlist(ep$marker_gene, use.names = FALSE))
+
     if (is.null(geneList)) {
       return(list(marker = gs, cells_proportion = ep$Proportion))
     } else {
-      data_all_sort <- geneList %>% arrange(desc(geneList[1]))
+      data_all_sort <- geneList %>% dplyr::arrange(dplyr::desc(geneList[1]))
       geneList = data_all_sort[[1]]
       names(geneList) <- row.names(data_all_sort)
-      y <- clusterProfiler::GSEA(gene = geneList, TERM2GENE = gs, minGSSize = 3, pvalueCutoff = 0.05, pAdjustMethod = "BH", seed = 123)
+      y <- clusterProfiler::GSEA(gene = geneList, TERM2GENE = gs, minGSSize = 3, pvalueCutoff = 0.05, pAdjustMethod = "BH", seed = seed)
     }
-    
-    am <- bnpathplot(results = y,
+
+    am <- CBNplot::bnpathplot(results = y,
                      exp = expression_data, qvalueCutOff = 0.05,cexLine = 0,
                      R = 100, orgDb = org.Mm.eg.db, nCategory = 50,
                      expRow = "SYMBOL", bypassConverting = T,
                      color = "enrichmentScore", returnNet = TRUE)
-     dcl_plot<-am$plot+scale_color_gradient2(name = "enrichmentScore",low = "#6DC2C5", mid = "white", high = "#aa0051", midpoint = 0)
+     dcl_plot<-am$plot+ggplot2::scale_color_gradient2(name = "enrichmentScore",low = "#6DC2C5", mid = "white", high = "#aa0051", midpoint = 0)
 
-    return(list(enricher = y, marker = gs,  dcl_plot = dcl_plot, bnObject = am, cells_proportion = combined_prop_df, gene_scores = combined_Escore_df,tissue=tissueType))
+    return(list(enricher = y, marker = gs,  dcl_plot = dcl_plot, bnObject = am, cells_proportion = ep$Proportion, gene_scores = ep$Escore,tissue=tissueType))
   } else {
     # multi tissue
     if (is.null(mult_tissue)) {
@@ -86,7 +71,7 @@ DCL_GSEA_net <- function(expression_data, geneList = NULL, tissueType = NULL, mu
     cores <- numCores
     cl <- parallel::makeCluster(cores)
     doParallel::registerDoParallel(cl)
-    set.seed(123)
+    doRNG::registerDoRNG(seed)
 
     # foreach cycle
     start_time <- Sys.time()
@@ -124,32 +109,32 @@ DCL_GSEA_net <- function(expression_data, geneList = NULL, tissueType = NULL, mu
       colnames(gs) <- c("cellName", "geneID")
       row.names(gs) <- gs$SYMBOL
       symbol <- as.character(gs[, 2])
-      eg_gs <- bitr(symbol, fromType = "SYMBOL", toType = "ENTREZID", OrgDb = "org.Mm.eg.db")
+      eg_gs <- clusterProfiler::bitr(symbol, fromType = "SYMBOL", toType = "ENTREZID", OrgDb = "org.Mm.eg.db")
       row.names(gs) <- gs$SYMBOL
       row.names(eg_gs) <- eg_gs$SYMBOL
       colnames(eg_gs) <- c("geneID", "ENTREZID")
       ggs <- merge(gs, eg_gs, by = "geneID")
       ggs$geneID <- NULL
       colnames(ggs) <- c("cellName", "geneID")
-      ggs <- ggs %>% distinct(cellName, geneID)
+      ggs <- ggs %>% dplyr::distinct(cellName, geneID)
     }
     
     if (is.null(geneList)) {
       return(list(marker = gs, cells_proportion = ep$Proportion))
     } else {
-      data_all_sort <- geneList %>% arrange(desc(geneList[1]))
+      data_all_sort <- geneList %>% dplyr::arrange(dplyr::desc(geneList[1]))
       geneList = data_all_sort[[1]]
       names(geneList) <- row.names(data_all_sort)
-      y <- clusterProfiler::GSEA(gene = geneList, TERM2GENE = gs, minGSSize = 3, pvalueCutoff = 0.05, pAdjustMethod = "BH", seed = 123)
+      y <- clusterProfiler::GSEA(gene = geneList, TERM2GENE = gs, minGSSize = 3, pvalueCutoff = 0.05, pAdjustMethod = "BH", seed = seed)
     }
-    
-    am <- bnpathplot(results = y,
+
+    am <- CBNplot::bnpathplot(results = y,
                      exp = expression_data, qvalueCutOff = 0.05,cexLine = 0,
                      R = 100, orgDb = org.Mm.eg.db, nCategory = 50,
                      expRow = "SYMBOL", bypassConverting = T,hub=hub,
                      color = "enrichmentScore", returnNet = TRUE)
-                              
-    dcl_plot<-am$plot+scale_color_gradient2(name = "enrichmentScore",low = "#6DC2C5", mid = "white", high = "#aa0051", midpoint = 0)
+
+    dcl_plot<-am$plot+ggplot2::scale_color_gradient2(name = "enrichmentScore",low = "#6DC2C5", mid = "white", high = "#aa0051", midpoint = 0)
                               
     return(invisible(list(enricher = y, marker = gs, bnObject = am, 
                 dcl_plot = dcl_plot,
