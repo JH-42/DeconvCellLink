@@ -3,7 +3,7 @@ Type: Package
 Title: Linking Deconvolution Cell Types
 Version: 1.2.0
 Authors@R: person("JunHao", "Wang", email = "mirrersan@foxmail.com", role = c("aut", "cre"))
-Maintainer: JunHao <mirrersan@foxmail.com>
+Maintainer: JunHao <junhao.wang.research@gmail.com>
 Description: Infer potential deconvolution cell types interactions from mouse bulk RNA-seq data.
     This package provides methods to analyze and visualize cell-cell communications
     derived from deconvolution results of bulk RNA-seq data in mouse models.
