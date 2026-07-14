@@ -91,12 +91,12 @@ DCL_LR_chord(DCL_obj, lr_table = LR$results)
 
 # node_score (optional) colours the cell-type nodes. It is a named numeric vector,
 # one value per cell type. Here we use the mean logFC of each cell type's marker genes:
-mk <- DCL_obj$marker
-mk$lineage <- sub("_[0-9]+$", "", mk$cellName)                 # neutrophil_1 -> neutrophil
-mk <- merge(mk, de_table[, c("gene", "logFC")], by.x = "geneID", by.y = "gene")
-node_es <- tapply(mk$logFC, mk$lineage, mean)                  # named numeric: cell type -> mean logFC
-
-DCL_LR_chord(DCL_obj, lr_table = LR$results, node_score = node_es)
+####### example
+#mk <- DCL_obj$marker
+#mk$lineage <- sub("_[0-9]+$", "", mk$cellName)                 # neutrophil_1 -> neutrophil
+#mk <- merge(mk, de_table[, c("gene", "logFC")], by.x = "geneID", by.y = "gene")
+#node_es <- tapply(mk$logFC, mk$lineage, mean)                  # named numeric: cell type -> mean logFC
+#DCL_LR_chord(DCL_obj, lr_table = LR$results, node_score = node_es)
 ```
 ![Chord Plot](https://github.com/JH-42/DeconvCellLink/blob/main/img/chord.png)
 
