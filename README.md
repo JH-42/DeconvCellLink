@@ -2,9 +2,11 @@
 
 Infer potential cell-cell communication between deconvolution-derived cell types from mouse bulk RNA-seq data.
 
-DeconvCellLink deconvolves a bulk RNA-seq matrix into cell-type proportions and marker genes with SSMD, tests which cell types are associated with a gene list of interest (over-representation with `DCL_net`, or GSEA with `DCL_GSEA_net`), and learns a Bayesian network over those cell types to propose cell-cell links. `DCL_LR_plot` then maps ligand-receptor pairs onto the linked cell types.
+DeconvCellLink deconvolves a bulk RNA-seq matrix into cell-type proportions and marker genes with SSMD, tests which cell types are associated with a gene list of interest (over-representation with `DCL_net`, or GSEA with `DCL_GSEA_net`), and learns a Bayesian network over those cell types to propose cell-cell links. `DCL_LR_plot` maps ligand-receptor pairs onto the linked cell types, and `DCL_LR_chord` draws a circular chord summary of the network.
 
 ## Update
+
+**Version 1.2.1 (2026-07-13)**: Added LR chord plot function.
 
 **Version 1.2 (2024-03-17)**: Added ligand-receptor interaction functions.
 
@@ -81,6 +83,14 @@ LR <- DCL_LR_plot(DCL_obj, deg = deg, expression_data = exp,
 LR$LR_plot
 ```
 ![LR Plot](https://github.com/JH-42/DeconvCellLink/blob/main/img/LR.png)
+
+```r
+# circular chord summary of the cell-cell network
+node_es <- ...   # named numeric, one score per lineage (e.g. mean DEG logFC of its markers)
+chord <- DCL_LR_chord(DCL_obj, node_score = node_es, lr_table = LR$results)
+chord
+```
+![Chord Plot](https://github.com/JH-42/DeconvCellLink/blob/main/img/chord.png)
 
 For a single tissue you can pass either `tissueType = "Inflammatory"` (with `mult = FALSE`, the default) or `mult = TRUE, mult_tissue = "Inflammatory"`, both give the same cell-cell network. Use `mult = TRUE` when you pass more than one tissue.
 

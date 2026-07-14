@@ -1,8 +1,8 @@
 Package: DeconvCellLink
 Type: Package
 Title: Linking Deconvolution Cell Types
-Version: 1.2.0
-Authors@R: person("JunHao", "Wang", email = "mirrersan@foxmail.com", role = c("aut", "cre"))
+Version: 1.2.1
+Authors@R: person("JunHao", "Wang", email = "junhao.wang.research@gmail.com", role = c("aut", "cre"))
 Maintainer: JunHao <junhao.wang.research@gmail.com>
 Description: Infer potential deconvolution cell types interactions from mouse bulk RNA-seq data.
     This package provides methods to analyze and visualize cell-cell communications
@@ -20,6 +20,7 @@ Imports:
     enrichplot,
     ggplot2,
     ggraph,
+    ggrepel,
     igraph,
     org.Mm.eg.db,
     reshape2,
